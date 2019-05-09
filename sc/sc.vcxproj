@@ -94,6 +94,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessToFile>true</PreprocessToFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -115,6 +116,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="sc.cpp" />
+    <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Token_stream.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sc.h" />
+    <ClInclude Include="Token.h" />
+    <ClInclude Include="Token_stream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
