@@ -2,6 +2,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <set>
+#include <algorithm>
 #include "Token.h"
 
 class Token_stream {
@@ -11,6 +13,7 @@ public:
 	~Token_stream() { close(); }
 	Token get(); //read and return next tken
 	Token& current(); //most recently read token
+	bool is_cmd();
 	void set_input(std::istream& s) { close(); ip = &s; owns = false; } 
 	void set_input(std::istream* p) { close(); ip =  p; owns = true; }
 private: 

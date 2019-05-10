@@ -6,42 +6,58 @@
 
 Token_stream ts = { std::cin };
 using symbol_map = std::map<std::string, double>;
-symbol_map table = {};
+static symbol_map table = {};
 int no_of_errors = 0;
 
 double error(const std::string& s)
 {
 	no_of_errors++;
-	std::cerr << "error: " << s << '\n';
+	std::cerr << "error: " << s << std::endl;
 	return 1;
+}
+
+std::ostream &operator<<(std::ostream &os, symbol_map &map) {
+	for (const auto &[k, v] : map){
+		os << k << ": " << v << std::endl;
+	}
+	return os;
 }
 
 double prim(bool get) //handle primaries
 {
 	if (get) ts.get(); //read next token
 	switch (ts.current().kind) {
+	case Kind::cmd: 
+	{
+		if (ts.current().string_value == std::string{ "ds" }) {
+			std::cout << table << std::endl;
+		}
+		std::cout << std::endl;
+		return 0;
+	}
 	case Kind::number: //floating - point constant
 	{	double v = ts.current().number_value;
-	ts.get();
-	return v;
+		ts.get();
+		return v;
 	}
 	case Kind::name:
 	{	double& v = table[ts.current().string_value]; //find the corresponding name
-	if (ts.get().kind == Kind::assign)
-		v = expr(true); //' = ' seen : assignment
-	return v;
+		if (ts.get().kind == Kind::assign)
+			v = expr(true); //' = ' seen : assignment
+		return v;
 	}
 	case Kind::minus: //unary minus
 		return -prim(true);
 	case Kind::lp:
 	{	auto e = expr(true);
-	if (ts.current().kind != Kind::rp)
-		return error("')' expected");
-	ts.get(); // eat ')' 
-	return e;
+		std::cerr << "subexpr: " << e << std::endl;
+		if (ts.current().kind != Kind::rp)
+			return error("')' expected");
+		ts.get(); // eat ')' 
+		return e;
 	}
 	default:
-		return error("primar y expected");
+		return error("primary expected");
 	}
 }
 
@@ -75,9 +91,10 @@ double expr(bool get) //add and subtract
 
 void calculate() { 
 	while (true) { 
+		std::cout << "> ";
 		ts.get();
-		if (ts.current().kind == Kind::end) break; 
-		if (ts.current().kind == Kind::print) continue; 
+		if (ts.current().kind == Kind::end) break;
+		if (ts.current().kind == Kind::print) continue;
 		std::cout << expr(false) << '\n'; 
 	} 
 }
