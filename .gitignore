@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 fix-email-history
+sc/*.o
+sc/*.exe

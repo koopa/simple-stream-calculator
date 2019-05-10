@@ -1,8 +1,5 @@
 #include "sc.h"
-
-//symbol_map table;  
-
-//Token_stream ts{ std::cin };
+#include <sstream>
 
 Token_stream ts = { std::cin };
 using symbol_map = std::map<std::string, double>;
@@ -104,9 +101,12 @@ void calculate() {
 	} 
 }
 
-int main() {
+int main(int argc, char** argv) {
+	if (argc == 2) {
+		ts.set_input(new std::istringstream{ argv[1] });
+	}
 	//insert predefined names	
-	table["pi"] = 3.1415926535897932385; 
+	table["pi"] = 3.1415926535897932385;
 	table["e"] = 2.7182818284590452354;
 	calculate();
 	return no_of_errors;
