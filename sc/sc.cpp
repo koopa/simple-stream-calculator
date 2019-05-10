@@ -33,7 +33,9 @@ double prim(bool get) //handle primaries
 			std::cout << table << std::endl;
 		}
 		std::cout << std::endl;
-		return 0;
+		ts.current().kind = Kind::end;
+		std::cout << "current symbol count: ";
+		return table.size();
 	}
 	case Kind::number: //floating - point constant
 	{	double v = ts.current().number_value;
@@ -81,7 +83,7 @@ double expr(bool get) //add and subtract
 	double left = term(get);
 	while (true) {
 		switch (ts.current().kind) {
-		case Kind::plus: left += term(true); break;
+		case Kind::plus:  left += term(true); break;
 		case Kind::minus: left -= term(true); break;
 		default: return left;
 		}
@@ -90,8 +92,11 @@ double expr(bool get) //add and subtract
 
 
 void calculate() { 
-	while (true) { 
-		std::cout << "> ";
+	std::cout << "> ";
+	while (true) {
+		if (ts.current().kind != Kind::end) {
+			std::cout << "> ";
+		}
 		ts.get();
 		if (ts.current().kind == Kind::end) break;
 		if (ts.current().kind == Kind::print) continue;
